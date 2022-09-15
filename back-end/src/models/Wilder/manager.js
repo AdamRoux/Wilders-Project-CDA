@@ -9,7 +9,6 @@ async function initializeWilders() {
   const wilderRepository = await getWilderRepository();
   await wilderRepository.clear();
   const lyonSchool = await getSchoolByName("Lyon");
-  const php = await getSkillByName("PHP");
   const js = await getSkillByName("JavaScript");
   const node = await getSkillByName("NodeJS");
   const html = await getSkillByName("HTML");
@@ -17,7 +16,7 @@ async function initializeWilders() {
     firstName: "Vianney",
     lastName: "Accart",
     school: lyonSchool,
-    skills: [js, node, html],
+    skills: [js, html, node],
   });
   await wilderRepository.save({
     firstName: "Adam",
