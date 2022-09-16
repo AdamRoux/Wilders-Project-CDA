@@ -1,5 +1,7 @@
 const express = require("express");
 const wildersControllers = require("./controllers/wilders");
+const skillsControllers = require("./controllers/skills");
+const schoolControllers = require("./controllers/schools");
 const { getDatabase } = require("./database/utils");
 const { initializeSchools } = require("./models/School/manager");
 const { initializeSkills } = require("./models/Skill/manager");
@@ -18,6 +20,12 @@ app.post(WILDERS_PATH, wildersControllers.post);
 app.put(`${WILDERS_PATH}/:id`, wildersControllers.put);
 app.delete(`${WILDERS_PATH}/:id`, wildersControllers.del);
 app.post(`${WILDERS_PATH}/:id/skills`, wildersControllers.addSkill);
+
+const SKILLS_PATH = "/skills";
+app.get(SKILLS_PATH, skillsControllers.get);
+
+const SCHOOL_PATH = "/schools";
+app.get(SCHOOL_PATH, schoolControllers.get);
 
 const PORT = 4000;
 

@@ -18,7 +18,19 @@ async function getSchoolByName(name) {
   return schoolRepository.findOneBy({ schoolName: name });
 }
 
+async function getSchools() {
+  const schoolRepository = await getSchoolRepository();
+  return schoolRepository.find();
+}
+
+async function getSchoolById(id) {
+  const schoolRepository = await getSchoolRepository();
+  return schoolRepository.findOneBy({ id: id });
+}
+
 module.exports = {
   initializeSchools,
   getSchoolByName,
+  getSchools,
+  getSchoolById,
 };

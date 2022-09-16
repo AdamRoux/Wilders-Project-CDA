@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "./Wilder.styled";
 
-const Wilder = ({ firstName, lastName, skills }) => {
+const Wilder = ({ firstName, lastName, skills, school }) => {
   return (
     <Card>
       <CardImage src={blankProfilePicture} alt="Jane Doe Profile" />
@@ -22,6 +22,7 @@ const Wilder = ({ firstName, lastName, skills }) => {
         veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
         commodo consequat.
       </CardParagraph>
+      <CardSecondaryTitle>École : {school}</CardSecondaryTitle>
       <CardSecondaryTitle>Wild Skills</CardSecondaryTitle>
       <CardSkillList>
         {skills.map((skill) => (

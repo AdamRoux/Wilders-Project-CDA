@@ -15,4 +15,9 @@ async function getSkillByName(name) {
   return skillRepository.findOneBy({ skillName: name });
 }
 
-module.exports = { initializeSkills, getSkillByName };
+async function getSkills() {
+  const skillRepository = await getSkillRepository();
+  return skillRepository.find();
+}
+
+module.exports = { initializeSkills, getSkillByName, getSkills };
