@@ -1,5 +1,6 @@
 import { getWilders, createWilder, updateWilder, deleteWilder, addSkillToWilder } from "../models/Wilder/manager";
 import {Request, Response} from "express"
+import { getErrorMessage } from "../utils";
 
 const get = async (req: Request, res: Response): Promise<void> => {
   const wilders = await getWilders();
@@ -26,8 +27,8 @@ const put = async (req: Request, res: Response): Promise<void> => {
     try {
       const updatedWilder = await updateWilder(id, firstName, lastName);
       res.json(updatedWilder);
-    } catch (error: any) {
-      res.status(404).json({ error: error.message });
+    } catch (error) {
+      res.status(404).json({ error: getErrorMessage(error) });
     }
   }
 };
@@ -38,8 +39,8 @@ const del = async (req: Request, res: Response): Promise<void> => {
   try {
     await deleteWilder(id);
     res.json({ message: `Wilder ${id} has been successfully removed.` });
-  } catch (error: any) {
-    res.status(404).json({ error: error.message });
+  } catch (error) {
+    res.status(404).json({ error: getErrorMessage(error) });
   }
 };
 
@@ -53,8 +54,8 @@ const addSkill = async (req: Request, res: Response): Promise<void> => {
     try {
       const updatedWilder = await addSkillToWilder(wilderId, skillId);
       res.json(updatedWilder);
-    } catch (error: any) {
-      res.status(404).json({ error: error.message });
+    } catch (error ) {
+      res.status(404).json({ error: getErrorMessage(error) });
     }
   }
 };
