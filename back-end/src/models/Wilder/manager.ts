@@ -1,44 +1,31 @@
-const {
-  getWilderRepository,
-  getSkillRepository,
-} = require("../../database/utils");
-const { getSchoolByName } = require("../School/manager");
-const { getSkillByName } = require("../Skill/manager");
-const { getSchoolById } = require("../School/manager");
+import { getWilderRepository, getSkillRepository } from "../../database/utils";
+import { getSchoolByName } from "../School/manager";
+import { getSkillByName } from "../Skill/manager";
+import { getSchoolById } from "../School/manager";
+import Wilder from '.';
+import School from "../School";
+import Skill from "../Skill";
 
 async function initializeWilders() {
   const wilderRepository = await getWilderRepository();
   await wilderRepository.clear();
-  const lyonSchool = await getSchoolByName("Lyon");
-  const js = await getSkillByName("JavaScript");
-  const node = await getSkillByName("NodeJS");
-  const html = await getSkillByName("HTML");
-  await wilderRepository.save({
-    firstName: "Vianney",
-    lastName: "Accart",
-    school: lyonSchool,
-    skills: [js, html, node],
-  });
-  await wilderRepository.save({
-    firstName: "Adam",
-    lastName: "Roux",
-    school: lyonSchool,
-    skills: [js, node, html],
-  });
-  await wilderRepository.save({
-    firstName: "Ario",
-    lastName: "Ngu",
-    school: lyonSchool,
-    skills: [html],
-  });
+  const lyonSchool = await getSchoolByName("Lyon") as School;
+  const js = await getSkillByName("JavaScript") as Skill;
+  const node = await getSkillByName("NodeJS")as Skill;
+  const html = await getSkillByName("HTML")as Skill;
+
+  const vianney = new Wilder("Vianney", "Accart", lyonSchool, [js, node, html]);
+  const adam = new Wilder("Adam", "Roux", lyonSchool, [js, node, html]);
+
+  await wilderRepository.save([vianney, adam]);
 }
 
-async function getWilders() {
+async function getWilders(): Promise<Wilder[]> {
   const wilderRepository = await getWilderRepository();
   return wilderRepository.find();
 }
 
-async function createWilder(firstName, lastName, schoolId) {
+async function createWilder(firstName: string, lastName: string, schoolId: string ): Promise<Wilder> {
   const wilderRepository = await getWilderRepository();
   const school = await getSchoolById(schoolId);
   console.log(school);
@@ -52,7 +39,7 @@ async function createWilder(firstName, lastName, schoolId) {
   return newWilder;
 }
 
-async function updateWilder(id, firstName, lastName) {
+async function updateWilder(id:string, firstName:string, lastName:string): Promise<Wilder> {
   const wilderRepository = await getWilderRepository();
   const existingWilder = await wilderRepository.findOneBy({ id });
   if (!existingWilder) {
@@ -65,7 +52,7 @@ async function updateWilder(id, firstName, lastName) {
   });
 }
 
-const deleteWilder = async (id) => {
+const deleteWilder = async (id:string) => {
   const wilderRepository = await getWilderRepository();
   const existingWilder = await wilderRepository.findOneBy({ id });
   if (!existingWilder) {
@@ -74,7 +61,7 @@ const deleteWilder = async (id) => {
   return wilderRepository.remove(existingWilder);
 };
 
-const addSkillToWilder = async (wilderId, skillId) => {
+const addSkillToWilder = async (wilderId:string, skillId:string) => {
   const wilderRepository = await getWilderRepository();
   const skillRepository = await getSkillRepository();
   const wilder = await wilderRepository.findOneBy({ id: wilderId });
@@ -89,7 +76,7 @@ const addSkillToWilder = async (wilderId, skillId) => {
   return wilderRepository.save(wilder);
 };
 
-module.exports = {
+export {
   initializeWilders,
   getWilders,
   createWilder,
