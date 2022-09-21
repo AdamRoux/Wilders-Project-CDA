@@ -1,4 +1,6 @@
+import React from "react";
 import blankProfilePicture from "../../media/blank-profile-picture.png";
+import { WilderType } from "../../types";
 import Skill from "../Skill/Skill";
 import {
   Card,
@@ -9,7 +11,9 @@ import {
   CardTitle,
 } from "./Wilder.styled";
 
-const Wilder = ({ firstName, lastName, skills, school }) => {
+type PropType = Omit<WilderType, "id" | "school">;
+
+const Wilder = ({ firstName, lastName, skills }: PropType) => {
   return (
     <Card>
       <CardImage src={blankProfilePicture} alt="Jane Doe Profile" />
@@ -22,7 +26,6 @@ const Wilder = ({ firstName, lastName, skills, school }) => {
         veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
         commodo consequat.
       </CardParagraph>
-      <CardSecondaryTitle>École : {school}</CardSecondaryTitle>
       <CardSecondaryTitle>Wild Skills</CardSecondaryTitle>
       <CardSkillList>
         {skills.map((skill) => (

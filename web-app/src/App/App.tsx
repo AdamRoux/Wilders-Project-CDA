@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+
 import CreateWilder from "../pages/CreateWilder/CreateWilder";
 import Home from "../pages/Home/Home";
 import { CREATE_WILDER_PATH, HOME_PATH } from "../pages/paths";
@@ -18,7 +19,7 @@ function App() {
       <Header>
         <Container>
           <PageTitle>
-            <PageTitleLink to={"/"}>Wild Circus</PageTitleLink>
+            <PageTitleLink to={HOME_PATH}>Wilders Book</PageTitleLink>
           </PageTitle>
         </Container>
       </Header>

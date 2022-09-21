@@ -1,7 +1,8 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+
 import { MAIN_THEME_COLOR } from "../styles/style-constants";
 import { baseContainerStyles, baseTitleStyles } from "../styles/base-styles";
-import { Link } from "react-router-dom";
 
 export const Container = styled.div`
   ${baseContainerStyles}
@@ -28,8 +29,4 @@ export const PageTitle = styled.h1`
 export const PageTitleLink = styled(Link)`
   color: inherit;
   text-decoration: none;
-  &hover: {
-    text-decoration: underline;
-    color: inherit;
-  }
 `;
