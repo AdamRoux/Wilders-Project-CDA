@@ -1,3 +1,4 @@
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 import CreateWilder from "../pages/CreateWilder/CreateWilder";
 import Home from "../pages/Home/Home";
