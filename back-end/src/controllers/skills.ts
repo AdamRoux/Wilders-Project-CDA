@@ -1,7 +1,8 @@
-import { getSkills } from "../models/Skill/manager";
 import { Request, Response } from "express";
+
+import SkillRepository from "../models/Skill/repository";
 const get = async (req: Request, res: Response) => {
-  const skills = await getSkills();
+  const skills = await SkillRepository.getSkills();
   res.json(skills);
 };
 

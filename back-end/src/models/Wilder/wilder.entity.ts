@@ -1,8 +1,7 @@
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import School from "../School";
-import Skill from "../Skill";
+import School from "../School/school.entity";
+import Skill from "../Skill/skill.entity";
 
-const EntitySchema = require("typeorm").EntitySchema;
 
 @Entity()
 export default class Wilder {
@@ -29,5 +28,4 @@ export default class Wilder {
   @ManyToMany(() => Skill,  {eager: true})
   @JoinTable()
   skills: Skill[];
-  
 }

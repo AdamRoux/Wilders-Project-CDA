@@ -1,7 +1,6 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
-import Wilder from "../Wilder";
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn, Repository } from "typeorm";
+import Wilder from "../Wilder/wilder.entity";
 
-const EntitySchema = require("typeorm").EntitySchema;
 
 
 @Entity()
@@ -15,5 +14,8 @@ export default class Skill {
 
   @ManyToMany(() => Wilder, (wilder) => wilder.skills)
   wilders: Wilder[];
+
+  
+
   
 }
