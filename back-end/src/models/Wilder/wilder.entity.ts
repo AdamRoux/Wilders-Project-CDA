@@ -28,4 +28,8 @@ export default class Wilder {
   @ManyToMany(() => Skill,  {eager: true})
   @JoinTable()
   skills: Skill[];
+
+  getFullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
 }

@@ -1,4 +1,4 @@
-import { DataSource } from "typeorm";
+import { DataSource, EntityTarget } from "typeorm";
 import Wilder from "../models/Wilder/wilder.entity";
 import School from "../models/School/school.entity";
 import Skill from "../models/Skill/skill.entity";
@@ -21,20 +21,12 @@ async function getDatabase() {
   return dataSource;
 }
 
-async function getWilderRepository() {
-  return (await getDatabase()).getRepository(Wilder);
+async function getRepository(entity: EntityTarget<any>) {
+  const repository = (await getDatabase()).getRepository(entity);
+  return repository;
 }
-
-async function getSchoolRepository() {
-  return (await getDatabase()).getRepository(School);
-}
-
-const getSkillRepository = async () =>
-  (await getDatabase()).getRepository(Skill);
 
 export {
   getDatabase,
-  getWilderRepository,
-  getSchoolRepository,
-  getSkillRepository,
+  getRepository
 };

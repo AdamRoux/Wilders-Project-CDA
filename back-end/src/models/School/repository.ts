@@ -1,6 +1,6 @@
 import { Repository } from "typeorm/repository/Repository";
 import School from "./school.entity";
-import { getSchoolRepository } from "../../database/utils";
+import { getRepository } from "../../database/utils";
 
 export default class SchoolRepository extends School {
 
@@ -8,7 +8,7 @@ export default class SchoolRepository extends School {
 
   // get repository
   static async initializeRepository(): Promise<void> {
-    this.repository =  await getSchoolRepository();
+    this.repository =  await getRepository(School);
   }
 
 

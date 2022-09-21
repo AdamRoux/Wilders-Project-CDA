@@ -1,7 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, Index, OneToMany, ManyToMany, Repository } from "typeorm";
-import { getSchoolRepository } from "../../database/utils";
 import Wilder from "../Wilder/wilder.entity";
-import WilderRepository from "../Wilder/repository";
+
 
 @Entity()
 export default class School {

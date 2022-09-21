@@ -1,17 +1,18 @@
 import { Repository } from "typeorm";
 import Wilder from "./wilder.entity";
-import { getWilderRepository } from "../../database/utils";
+
 import School from "../School/school.entity";
 import SchoolRepository from "../School/repository";
 import Skill from "../Skill/skill.entity";
 import SkillRepository from "../Skill/repository";
+import { getRepository } from "../../database/utils";
 
 export default class WilderRepository extends Wilder {
     private static repository: Repository<Wilder>;
 
     // get repository
     static async initializeRepository(): Promise<void> {
-      this.repository =  await getWilderRepository();
+      this.repository =  await getRepository(Wilder);
     }
   
   
