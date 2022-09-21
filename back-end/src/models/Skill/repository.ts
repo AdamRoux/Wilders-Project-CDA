@@ -19,11 +19,12 @@ export default class SkillRepository extends Skill {
 static async initializeSkills() {
   
   await this.repository.clear();
-  ["HTML", "CSS", "React", "NodeJS", "MongoDB", "PHP", "JavaScript"].forEach(
-    (skill) => {
-      this.repository.save({ skillName: skill });
-    }
-  );
+  const skills = ["HTML", "CSS", "React", "NodeJS", "MongoDB", "PHP", "JavaScript"];
+  
+  for (const skill of skills) {
+    
+    await this.repository.save({ skillName: skill });
+  }
 };
 
 static async getSkillByName(name: string): Promise<Skill | null> {

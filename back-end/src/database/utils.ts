@@ -1,7 +1,4 @@
 import { DataSource, EntityTarget } from "typeorm";
-import Wilder from "../models/Wilder/wilder.entity";
-import School from "../models/School/school.entity";
-import Skill from "../models/Skill/skill.entity";
 
 const dataSource = new DataSource({
   type: "sqlite",

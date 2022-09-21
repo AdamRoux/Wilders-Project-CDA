@@ -34,9 +34,9 @@ async function start() {
   await SchoolRepository.initializeRepository();
   await WilderRepository.initializeRepository();
   
-
-  await WilderRepository.initializeWilders();
+  await SchoolRepository.initializeSchools();
   await SkillRepository.initializeSkills();
+  await WilderRepository.initializeWilders();
 
   await getDatabase();
   app.listen(PORT, () => {
