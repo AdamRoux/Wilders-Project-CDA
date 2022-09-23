@@ -16,8 +16,8 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
-  useEffect(() => {
-    (async () => {
+  const _fetchWilders = 
+    async () => {
       try {
         const fetchedWilders = await fetchWilders();
         setWilders(fetchedWilders);
@@ -26,8 +26,13 @@ const Home = () => {
       } finally {
         setIsLoading(false);
       }
-    })();
+    }
+
+  useEffect(() => {
+    _fetchWilders();
   }, []);
+
+
 
   const renderMainContent = () => {
     if (isLoading) {
@@ -44,9 +49,11 @@ const Home = () => {
         {wilders.map((wilder) => (
           <Wilder
             key={wilder.id}
+            id={wilder.id}
             firstName={wilder.firstName}
             lastName={wilder.lastName}
             skills={wilder.skills}
+            onDelete={_fetchWilders}
           />
         ))}
       </CardRow>

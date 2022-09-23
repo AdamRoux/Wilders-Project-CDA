@@ -41,7 +41,6 @@ export default class WilderRepository extends Wilder {
   
   
     static async createWilder(firstName: string, lastName: string, schoolId: string ): Promise<Wilder> {
-  
       const school = await SchoolRepository.getSchoolById(schoolId);
       console.log(school);
       if (!school) throw Error("No existing school matching ID.");
@@ -56,7 +55,6 @@ export default class WilderRepository extends Wilder {
   
   
   static async updateWilder(id:string, firstName:string, lastName:string): Promise<Wilder> {
-  
     const existingWilder = await this.repository.findOneBy({ id });
     if (!existingWilder) {
       throw Error("No existing Wilder matching ID.");
