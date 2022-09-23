@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import { Box, ButtonGroup, Overlay } from "./Dialog.styled";
-
+import { disablePageScroll, enablePageScroll } from "../../browser-utils";
 const Dialog = ({
   onCancel,
   onConfirm,
@@ -7,6 +8,13 @@ const Dialog = ({
   onCancel: () => void;
   onConfirm: () => void;
 }) => {
+  useEffect(() => {
+    disablePageScroll();
+    return () => {
+      enablePageScroll();
+    };
+  });
+
   return (
     <Overlay
       onClick={(e) => {
