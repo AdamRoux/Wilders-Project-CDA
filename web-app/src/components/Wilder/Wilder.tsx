@@ -1,19 +1,13 @@
-import React, { useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
-import blankProfilePicture from "../../media/blank-profile-picture.png";
-import { WilderType } from "../../types";
-import CloseButton from "../CloseButton/CloseButton";
-import Dialog from "../Dialog/Dialog";
-import Skill from "../Skill/Skill";
-import { deleteWilder } from "./rest";
-import {
-  Card,
-  CardImage,
-  CardParagraph,
-  CardSecondaryTitle,
-  CardSkillList,
-  CardTitle,
-} from "./Wilder.styled";
+import React, { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+
+import blankProfilePicture from '../../media/blank-profile-picture.png';
+import { WilderType } from '../../types';
+import CloseButton from '../CloseButton/CloseButton';
+import Dialog from '../Dialog/Dialog';
+import Skill from '../Skill/Skill';
+import { deleteWilder } from './rest';
+import { Card, CardImage, CardParagraph, CardSecondaryTitle, CardSkillList, CardTitle } from './Wilder.styled';
 
 type PropType = Omit<WilderType, "school"> & { onDelete: () => void };
 
