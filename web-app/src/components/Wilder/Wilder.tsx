@@ -36,7 +36,7 @@ const Wilder = ({ firstName, lastName, skills, id, onDelete }: PropType) => {
 
   const onDeleteConfirmation = async () => {
     try {
-      await deleteWilder({ variables: { id: id } });
+      await deleteWilder({ variables: { deleteWilderId: id } });
       onDelete();
       toast.success("Wilder supprimé avec succès.");
     } catch (error: any) {

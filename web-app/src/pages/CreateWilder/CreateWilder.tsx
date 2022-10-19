@@ -38,7 +38,7 @@ const CreateWilder = () => {
 
   const submit = async () => {
     try {
-      await createWilder({ variables: { firstName, lastName } });
+      await createWilder({ variables: { firstName, lastName, schoolId } });
       toast.success(`Wilder ${firstName} ${lastName} créé avec succès.`);
       setFirstName("");
       setLastName("");
@@ -81,6 +81,21 @@ const CreateWilder = () => {
             value={lastName}
             onChange={(event) => {
               setLastName(event.target.value);
+            }}
+          />
+        </label>
+        <br />
+        <label>
+          School
+          <br />
+          <input
+            type="text"
+            required
+            id="schoolId"
+            name="schoolId"
+            value={schoolId}
+            onChange={(event) => {
+              setSchoolId(event.target.value);
             }}
           />
         </label>
