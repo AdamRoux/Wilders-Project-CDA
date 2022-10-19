@@ -1,59 +1,74 @@
-import React from "react";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { gql, useQuery } from '@apollo/client';
+import React from 'react';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
-import { CardRow } from "./Home.styled";
-import Wilder from "../../components/Wilder/Wilder";
-import Loader from "../../components/Loader";
-import { SectionTitle } from "../../styles/base-styles";
-import { CREATE_WILDER_PATH } from "../paths";
-import { fetchWilders } from "./rest";
-import { WilderType } from "../../types";
-import { getErrorMessage } from "../../utils";
+import Loader from '../../components/Loader';
+import Wilder from '../../components/Wilder/Wilder';
+import { SectionTitle } from '../../styles/base-styles';
+import { WilderType } from '../../types';
+import { CREATE_WILDER_PATH } from '../paths';
+import { CardRow } from './Home.styled';
 
-const Home = () => {
-  const [wilders, setWilders] = useState<null | WilderType[]>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const _fetchWilders = 
-    async () => {
-      try {
-        const fetchedWilders = await fetchWilders();
-        setWilders(fetchedWilders);
-      } catch (error) {
-        setErrorMessage(getErrorMessage(error));
-      } finally {
-        setIsLoading(false);
+const GET_WILDERS = gql`
+  query GetWilders {
+    wilders {
+      id
+      firstName
+      lastName
+      school {
+        schoolName
+      }
+      skills {
+        skillName
       }
     }
+  }
+`;
 
-  useEffect(() => {
-    _fetchWilders();
-  }, []);
+const Home = () => {
+  // const [wilders, setWilders] = useState<null | WilderType[]>(null);
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [errorMessage, setErrorMessage] = useState("");
 
+  // const _fetchWilders =
+  //   async () => {
+  //     try {
+  //       const fetchedWilders = await fetchWilders();
+  //       setWilders(fetchedWilders);
+  //     } catch (error) {
+  //       setErrorMessage(getErrorMessage(error));
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }
 
+  // useEffect(() => {
+  //   _fetchWilders();
+  // }, []);
+
+  const { data, loading, error, refetch } = useQuery(GET_WILDERS);
 
   const renderMainContent = () => {
-    if (isLoading) {
+    if (loading) {
       return <Loader />;
     }
-    if (errorMessage) {
-      return errorMessage;
+    if (error) {
+      return error.message;
     }
-    if (!wilders?.length) {
+    if (!data?.wilders.length) {
       return "Aucun wilder à afficher.";
     }
     return (
       <CardRow>
-        {wilders.map((wilder) => (
+        {data.wilders.map((wilder: WilderType) => (
           <Wilder
             key={wilder.id}
             id={wilder.id}
             firstName={wilder.firstName}
             lastName={wilder.lastName}
             skills={wilder.skills}
-            onDelete={_fetchWilders}
+            onDelete={refetch}
           />
         ))}
       </CardRow>
