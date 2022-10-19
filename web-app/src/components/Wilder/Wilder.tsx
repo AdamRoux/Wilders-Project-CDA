@@ -1,6 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
 import React, { useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import { DeleteWilderMutation, DeleteWilderMutationVariables, GetWildersQuery } from '../../gql/graphql';
 import blankProfilePicture from '../../media/blank-profile-picture.png';
@@ -76,7 +76,6 @@ const Wilder = ({ firstName, lastName, skills, id, onDelete }: PropType) => {
           }}
         />
       )}
-      <ToastContainer />
     </Card>
   );
 };

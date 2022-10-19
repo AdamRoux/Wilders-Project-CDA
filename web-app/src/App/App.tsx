@@ -1,17 +1,11 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
-import CreateWilder from "../pages/CreateWilder/CreateWilder";
-import Home from "../pages/Home/Home";
-import { CREATE_WILDER_PATH, HOME_PATH } from "../pages/paths";
-import {
-  Container,
-  Footer,
-  Header,
-  MainContainer,
-  PageTitle,
-  PageTitleLink,
-} from "./App.styled";
+import CreateWilder from '../pages/CreateWilder/CreateWilder';
+import Home from '../pages/Home/Home';
+import { CREATE_WILDER_PATH, HOME_PATH } from '../pages/paths';
+import { Container, Footer, Header, MainContainer, PageTitle, PageTitleLink } from './App.styled';
 
 function App() {
   return (
@@ -34,6 +28,7 @@ function App() {
           <p>&copy; 2022 Wild Code School</p>
         </Container>
       </Footer>
+      <ToastContainer />
     </>
   );
 }
