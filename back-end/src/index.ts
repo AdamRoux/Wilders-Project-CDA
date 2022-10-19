@@ -2,7 +2,6 @@ import 'reflect-metadata';
 
 import { ApolloServer } from 'apollo-server';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
-import express from 'express';
 import { buildSchema } from 'type-graphql';
 
 import { getDatabase } from './database/utils';
@@ -12,22 +11,6 @@ import WilderRepository from './models/Wilder/repository';
 import SchoolResolver from './resolvers/school.resolver';
 import WilderResolver from './resolvers/wilder.resolver';
 
-const app = express();
-app.use(express.json());
-
-app.get("/", function (req, res) {
-  res.send("Hello world from Express!");
-});
-
-// const WILDERS_PATH = "/wilders";
-// app.get(WILDERS_PATH, wildersControllers.get);
-// app.post(WILDERS_PATH, wildersControllers.post);
-// app.put(`${WILDERS_PATH}/:id`, wildersControllers.put);
-// app.delete(`${WILDERS_PATH}/:id`, wildersControllers.del);
-// app.post(`${WILDERS_PATH}/:id/skills`, wildersControllers.addSkill);
-
-// The ApolloServer constructor requires two parameters: your schema
-// definition and your set of resolvers.
 const startServer = async () => {
   const server = new ApolloServer({
     schema: await buildSchema({
