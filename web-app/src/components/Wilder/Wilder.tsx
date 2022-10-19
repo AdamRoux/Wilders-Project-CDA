@@ -1,18 +1,34 @@
+import { gql, useMutation } from '@apollo/client';
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 
+import { DeleteWilderMutation, DeleteWilderMutationVariables, GetWildersQuery } from '../../gql/graphql';
 import blankProfilePicture from '../../media/blank-profile-picture.png';
-import { WilderType } from '../../types';
 import CloseButton from '../CloseButton/CloseButton';
 import Dialog from '../Dialog/Dialog';
 import Skill from '../Skill/Skill';
 import { deleteWilder } from './rest';
 import { Card, CardImage, CardParagraph, CardSecondaryTitle, CardSkillList, CardTitle } from './Wilder.styled';
 
-type PropType = Omit<WilderType, "school"> & { onDelete: () => void };
+type PropType = GetWildersQuery["wilders"][number] & {
+  onDelete: () => void;
+};
+
+const DELETE_WILDERS = gql`
+  mutation DeleteWilder($deleteWilderId: String!) {
+    deleteWilder(id: $deleteWilderId) {
+      id
+      firstName
+    }
+  }
+`;
 
 const Wilder = ({ firstName, lastName, skills, id, onDelete }: PropType) => {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [deleteWilder] = useMutation<
+    DeleteWilderMutation,
+    DeleteWilderMutationVariables
+  >(DELETE_WILDERS);
 
   const onCloseButtonClick = () => {
     setShowDeleteConfirmation(true);
@@ -20,7 +36,7 @@ const Wilder = ({ firstName, lastName, skills, id, onDelete }: PropType) => {
 
   const onDeleteConfirmation = async () => {
     try {
-      await deleteWilder(id);
+      await deleteWilder({ variables: { id: id } });
       onDelete();
       toast.success("Wilder supprimé avec succès.");
     } catch (error: any) {
@@ -42,7 +58,7 @@ const Wilder = ({ firstName, lastName, skills, id, onDelete }: PropType) => {
       </CardParagraph>
       <CardSecondaryTitle>Wild Skills</CardSecondaryTitle>
       <CardSkillList>
-        {skills.map((skill) => (
+        {skills?.map((skill) => (
           <li key={skill.id}>
             <Skill skillName={skill.skillName} numberOfVotes={1} />
           </li>

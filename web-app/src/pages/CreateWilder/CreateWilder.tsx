@@ -1,19 +1,44 @@
-import React from "react";
-import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import 'react-toastify/dist/ReactToastify.css';
 
-import { SectionTitle } from "../../styles/base-styles";
-import { getErrorMessage } from "../../utils";
-import { createWilder } from "./rest";
+import { gql, useMutation } from '@apollo/client';
+import React from 'react';
+import { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+
+import { CreateWilderMutation, CreateWilderMutationVariables } from '../../gql/graphql';
+import { SectionTitle } from '../../styles/base-styles';
+import { getErrorMessage } from '../../utils';
+
+const CREATE_WILDERS = gql`
+  mutation CreateWilder(
+    $firstName: String!
+    $lastName: String!
+    $schoolId: String!
+  ) {
+    createWilder(
+      firstName: $firstName
+      lastName: $lastName
+      schoolId: $schoolId
+    ) {
+      id
+      firstName
+    }
+  }
+`;
 
 const CreateWilder = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [schoolId, setSchoolId] = useState("");
+
+  const [createWilder, { loading }] = useMutation<
+    CreateWilderMutation,
+    CreateWilderMutationVariables
+  >(CREATE_WILDERS);
 
   const submit = async () => {
     try {
-      await createWilder(firstName, lastName);
+      await createWilder({ variables: { firstName, lastName } });
       toast.success(`Wilder ${firstName} ${lastName} créé avec succès.`);
       setFirstName("");
       setLastName("");
@@ -29,8 +54,7 @@ const CreateWilder = () => {
         onSubmit={async (event) => {
           event.preventDefault();
           await submit();
-        }}
-      >
+        }}>
         <label>
           Prénom
           <br />
@@ -61,6 +85,7 @@ const CreateWilder = () => {
           />
         </label>
         <br />
+
         <button>Valider</button>
       </form>
       <ToastContainer />

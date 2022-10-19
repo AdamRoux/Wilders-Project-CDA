@@ -75,12 +75,15 @@ export default class WilderRepository extends Wilder {
     });
   }
 
-  static async deleteWilder(id: string) {
+  static async deleteWilder(id: string): Promise<Wilder> {
     const existingWilder = await this.repository.findOneBy({ id });
     if (!existingWilder) {
       throw Error("No existing Wilder matching ID.");
     }
-    return await this.repository.remove(existingWilder);
+    await this.repository.remove(existingWilder);
+    // resetting ID because existingWilder loses ID after calling remove
+    existingWilder.id = id;
+    return existingWilder;
   }
 
   static async addSkillToWilder(wilderId: string, skillId: string) {

@@ -15,8 +15,12 @@ export default class Wilder {
   ) {
     this.firstName = firstName;
     this.lastName = lastName;
-    if (school) this.school = school;
-    if (skills) this.skills = skills;
+    if (school) {
+      this.school = school;
+    }
+    if (skills) {
+      this.skills = skills;
+    }
   }
 
   @PrimaryGeneratedColumn("uuid")
@@ -36,11 +40,17 @@ export default class Wilder {
   school: School;
 
   @ManyToMany(() => Skill, { eager: true })
+  @Field(() => [Skill])
   @JoinTable()
-  @Field(() => [Skill], { nullable: true })
   skills: Skill[];
 
+  @Field(() => String)
   getFullName() {
     return `${this.firstName} ${this.lastName}`;
+  }
+
+  @Field(() => String)
+  getDisplayName() {
+    return `[${this.school?.schoolName ?? ""}] ${this.getFullName()}`;
   }
 }

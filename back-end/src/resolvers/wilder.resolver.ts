@@ -25,10 +25,9 @@ export default class WilderResolver {
     return WilderRepository.updateWilder(id, firstName, lastName);
   }
 
-  @Mutation(() => String)
-  deleteWilder(@Arg("id") id: string): String {
-    WilderRepository.deleteWilder(id);
-    return `Wilder ${id} successfully deleted`;
+  @Mutation(() => Wilder)
+  deleteWilder(@Arg("id") id: string): Promise<Wilder> {
+    return WilderRepository.deleteWilder(id);
   }
 
   @Mutation(() => Wilder)

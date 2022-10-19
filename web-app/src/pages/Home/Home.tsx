@@ -1,12 +1,11 @@
 import { gql, useQuery } from '@apollo/client';
 import React from 'react';
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Loader from '../../components/Loader';
 import Wilder from '../../components/Wilder/Wilder';
+import { GetWildersQuery } from '../../gql/graphql';
 import { SectionTitle } from '../../styles/base-styles';
-import { WilderType } from '../../types';
 import { CREATE_WILDER_PATH } from '../paths';
 import { CardRow } from './Home.styled';
 
@@ -16,10 +15,8 @@ const GET_WILDERS = gql`
       id
       firstName
       lastName
-      school {
-        schoolName
-      }
       skills {
+        id
         skillName
       }
     }
@@ -27,27 +24,10 @@ const GET_WILDERS = gql`
 `;
 
 const Home = () => {
-  // const [wilders, setWilders] = useState<null | WilderType[]>(null);
-  // const [isLoading, setIsLoading] = useState(true);
-  // const [errorMessage, setErrorMessage] = useState("");
-
-  // const _fetchWilders =
-  //   async () => {
-  //     try {
-  //       const fetchedWilders = await fetchWilders();
-  //       setWilders(fetchedWilders);
-  //     } catch (error) {
-  //       setErrorMessage(getErrorMessage(error));
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   }
-
-  // useEffect(() => {
-  //   _fetchWilders();
-  // }, []);
-
-  const { data, loading, error, refetch } = useQuery(GET_WILDERS);
+  const { data, loading, error, refetch } = useQuery<GetWildersQuery>(
+    GET_WILDERS,
+    { fetchPolicy: "cache-and-network" }
+  );
 
   const renderMainContent = () => {
     if (loading) {
@@ -56,12 +36,12 @@ const Home = () => {
     if (error) {
       return error.message;
     }
-    if (!data?.wilders.length) {
+    if (!data?.wilders?.length) {
       return "Aucun wilder à afficher.";
     }
     return (
       <CardRow>
-        {data.wilders.map((wilder: WilderType) => (
+        {data.wilders.map((wilder) => (
           <Wilder
             key={wilder.id}
             id={wilder.id}
