@@ -1,9 +1,9 @@
-import { DataSource, EntityTarget } from "typeorm";
+import { DataSource, EntityTarget } from 'typeorm';
 
 const dataSource = new DataSource({
-  type: "sqlite",
-  database: "wildersdb.sqlite",
-  synchronize: true,           
+  type: "postgres",
+  url: process.env.DATABASE_URL,
+  synchronize: true,
   entities: [__dirname + "/../models/**/**.entity.{js,ts}"],
   logging: ["query", "error"],
 });
@@ -23,7 +23,4 @@ async function getRepository(entity: EntityTarget<any>) {
   return repository;
 }
 
-export {
-  getDatabase,
-  getRepository
-};
+export { getDatabase, getRepository };
