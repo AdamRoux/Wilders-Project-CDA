@@ -24,8 +24,8 @@ cd web-app
 npm install
 ```
 
-Start server in development mode:
+### Run server in dev mode
 
 ```
-npm run start
+docker-compose -f docker-compose.dev.yml up --build
 ```
