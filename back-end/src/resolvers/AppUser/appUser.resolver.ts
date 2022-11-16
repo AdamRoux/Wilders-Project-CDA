@@ -1,4 +1,5 @@
-import { Args, Mutation, Resolver } from 'type-graphql';
+import { ExpressContext } from 'apollo-server-express';
+import { Args, Ctx, Mutation, Resolver } from 'type-graphql';
 
 import AppUser from '../../models/AppUser/appUser.entity';
 import AppUserRepository from '../../models/AppUser/repository';
@@ -19,7 +20,19 @@ export default class AppUserResolver {
   }
 
   @Mutation(() => AppUser)
-  signIn(@Args() { emailAddress, password }: SignInArgs): Promise<AppUser> {
-    return AppUserRepository.signIn(emailAddress, password);
+  async signIn(
+    @Args() { emailAddress, password }: SignInArgs,
+    @Ctx() context: ExpressContext
+  ): Promise<AppUser> {
+    const { appUser, session } = await AppUserRepository.signIn(
+      emailAddress,
+      password
+    );
+    context.res.cookie("sessionId", session.id, {
+      httpOnly: true,
+      sameSite: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365,
+    });
+    return appUser;
   }
 }

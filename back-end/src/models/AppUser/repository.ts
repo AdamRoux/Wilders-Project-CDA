@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 
 import { getRepository } from '../../database/utils';
 import AppUser from './appUser.entity';
+import AppUserSession from './session.entity';
 import SessionRepository from './session.repository';
 
 export default class AppUserRepository extends AppUser {
@@ -36,13 +37,13 @@ export default class AppUserRepository extends AppUser {
   static async signIn(
     emailAddress: string,
     password: string
-  ): Promise<AppUser> {
+  ): Promise<{ appUser: AppUser; session: AppUserSession }> {
     const appUser = await this.repository.findOneBy({ emailAddress });
     console.log(appUser);
     if (!appUser || !compareSync(password, appUser.hashedPassword)) {
       throw new Error("Invalid credentials");
     }
-    await SessionRepository.createSession(appUser);
-    return appUser;
+    const session = await SessionRepository.createSession(appUser);
+    return { appUser, session };
   }
 }
