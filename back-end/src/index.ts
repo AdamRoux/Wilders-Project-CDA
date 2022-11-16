@@ -9,9 +9,9 @@ import appUserRepository from './models/AppUser/repository';
 import SchoolRepository from './models/School/repository';
 import SkillRepository from './models/Skill/repository';
 import WilderRepository from './models/Wilder/repository';
-import appUserResolver from './resolvers/appUser.resolver';
-import SchoolResolver from './resolvers/school.resolver';
-import WilderResolver from './resolvers/wilder.resolver';
+import appUserResolver from './resolvers/AppUser/appUser.resolver';
+import SchoolResolver from './resolvers/School/school.resolver';
+import WilderResolver from './resolvers/Wilder/wilder.resolver';
 
 const startServer = async () => {
   const server = new ApolloServer({
