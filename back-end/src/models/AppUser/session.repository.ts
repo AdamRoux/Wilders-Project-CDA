@@ -21,4 +21,8 @@ export default class SessionRepository extends AppUserSession {
     const session = new AppUserSession(user);
     return await this.repository.save(session);
   }
+
+  static async findById(id: string): Promise<AppUserSession | null> {
+    return await this.repository.findOneBy({ id });
+  }
 }

@@ -46,4 +46,12 @@ export default class AppUserRepository extends AppUser {
     const session = await SessionRepository.createSession(appUser);
     return { appUser, session };
   }
+
+  static async findUserBySessionID(sessionId: string): Promise<AppUser> {
+    const session = await SessionRepository.findById(sessionId);
+    if (!session) {
+      throw new Error("Utilisateur non connecté.");
+    }
+    return session.user;
+  }
 }

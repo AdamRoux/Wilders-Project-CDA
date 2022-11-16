@@ -20,6 +20,9 @@ const GET_WILDERS = gql`
         skillName
       }
     }
+    myProfile {
+      firstName
+    }
   }
 `;
 
@@ -57,6 +60,7 @@ const Home = () => {
 
   return (
     <>
+      <i>Bonjour {data?.myProfile?.firstName}</i>
       <SectionTitle>Wilders</SectionTitle>
       <Link to={CREATE_WILDER_PATH}>Ajouter un nouveau Wilder</Link>
       <br />
