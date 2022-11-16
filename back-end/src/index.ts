@@ -5,7 +5,8 @@ import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { buildSchema } from 'type-graphql';
 
 import { getDatabase } from './database/utils';
-import appUserRepository from './models/AppUser/repository';
+import AppUserRepository from './models/AppUser/repository';
+import SessionRepository from './models/AppUser/session.repository';
 import SchoolRepository from './models/School/repository';
 import SkillRepository from './models/Skill/repository';
 import WilderRepository from './models/Wilder/repository';
@@ -34,7 +35,8 @@ const startServer = async () => {
     await SkillRepository.initializeRepository();
     await SchoolRepository.initializeRepository();
     await WilderRepository.initializeRepository();
-    await appUserRepository.initializeRepository();
+    await AppUserRepository.initializeRepository();
+    await SessionRepository.initializeRepository();
 
     await SchoolRepository.initializeSchools();
     await SkillRepository.initializeSkills();

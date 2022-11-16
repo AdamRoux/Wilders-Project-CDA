@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 
 import { getRepository } from '../../database/utils';
 import AppUser from './appUser.entity';
+import SessionRepository from './session.repository';
 
 export default class AppUserRepository extends AppUser {
   // DB operations
@@ -41,6 +42,7 @@ export default class AppUserRepository extends AppUser {
     if (!appUser || !compareSync(password, appUser.hashedPassword)) {
       throw new Error("Invalid credentials");
     }
+    await SessionRepository.createSession(appUser);
     return appUser;
   }
 }
