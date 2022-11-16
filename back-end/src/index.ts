@@ -5,16 +5,18 @@ import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { buildSchema } from 'type-graphql';
 
 import { getDatabase } from './database/utils';
+import appUserRepository from './models/AppUser/repository';
 import SchoolRepository from './models/School/repository';
 import SkillRepository from './models/Skill/repository';
 import WilderRepository from './models/Wilder/repository';
+import appUserResolver from './resolvers/appUser.resolver';
 import SchoolResolver from './resolvers/school.resolver';
 import WilderResolver from './resolvers/wilder.resolver';
 
 const startServer = async () => {
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [WilderResolver, SchoolResolver],
+      resolvers: [WilderResolver, SchoolResolver, appUserResolver],
     }),
     csrfPrevention: true,
     cache: "bounded",
@@ -32,6 +34,7 @@ const startServer = async () => {
     await SkillRepository.initializeRepository();
     await SchoolRepository.initializeRepository();
     await WilderRepository.initializeRepository();
+    await appUserRepository.initializeRepository();
 
     await SchoolRepository.initializeSchools();
     await SkillRepository.initializeSkills();
