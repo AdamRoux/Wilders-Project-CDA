@@ -51,6 +51,10 @@ export default class Wilder {
 
   @Field(() => String)
   getDisplayName() {
-    return `[${this.school?.schoolName ?? ""}] ${this.getFullName()}`;
+    const skillCount = this.skills?.length;
+
+    return `[${this.school?.schoolName ?? ""}] ${this.getFullName()}${
+      skillCount ? ` (${skillCount})` : ""
+    }`;
   }
 }
