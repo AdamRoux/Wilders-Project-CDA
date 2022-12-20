@@ -6,6 +6,8 @@ import AppUser from './appUser.entity';
 import AppUserSession from './session.entity';
 import SessionRepository from './session.repository';
 
+export const INVALID_CREDENTIALS_ERROR_MESSAGE = "Invalid credentials.";
+
 export default class AppUserRepository extends AppUser {
   // DB operations
   private static repository: Repository<AppUser>;
@@ -39,12 +41,16 @@ export default class AppUserRepository extends AppUser {
     password: string
   ): Promise<{ appUser: AppUser; session: AppUserSession }> {
     const appUser = await this.repository.findOneBy({ emailAddress });
-    console.log(appUser);
     if (!appUser || !compareSync(password, appUser.hashedPassword)) {
-      throw new Error("Invalid credentials");
+      throw new Error(INVALID_CREDENTIALS_ERROR_MESSAGE);
     }
     const session = await SessionRepository.createSession(appUser);
     return { appUser, session };
+  }
+
+  static async signOut(user: AppUser): Promise<void> {
+    // delete session linked to user
+    // return user
   }
 
   static async findUserBySessionID(sessionId: string): Promise<AppUser> {

@@ -5,15 +5,13 @@ import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { ExpressContext } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 
-import { getDatabase } from './database/utils';
+import { initializeDatabaseRepositories } from './database/utils';
 import AppUser from './models/AppUser/appUser.entity';
 import AppUserRepository from './models/AppUser/repository';
-import SessionRepository from './models/AppUser/session.repository';
 import SchoolRepository from './models/School/repository';
 import SkillRepository from './models/Skill/repository';
 import WilderRepository from './models/Wilder/repository';
 import AppUserResolver from './resolvers/AppUser/appUser.resolver';
-import SchoolResolver from './resolvers/School/school.resolver';
 import WilderResolver from './resolvers/Wilder/wilder.resolver';
 
 export type GlobalContext = ExpressContext & {
@@ -23,17 +21,17 @@ export type GlobalContext = ExpressContext & {
 const startServer = async () => {
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [WilderResolver, SchoolResolver, AppUserResolver],
-      authChecker: ({ context }) => {
+      resolvers: [WilderResolver, AppUserResolver],
+      authChecker: async ({ context }) => {
         return Boolean(context.user);
       },
     }),
     context: async (context): Promise<GlobalContext> => {
       const sessionId = AppUserResolver.getSessionIdInCookie(context);
-
       const user = !sessionId
         ? null
         : await AppUserRepository.findUserBySessionID(sessionId);
+
       return { res: context.res, req: context.req, user };
     },
     csrfPrevention: true,
@@ -47,22 +45,16 @@ const startServer = async () => {
      **/
     plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
   });
+
   // The `listen` method launches a web server.
-  await server.listen().then(async ({ url }) => {
-    await SkillRepository.initializeRepository();
-    await SchoolRepository.initializeRepository();
-    await WilderRepository.initializeRepository();
-    await AppUserRepository.initializeRepository();
-    await SessionRepository.initializeRepository();
+  const { url } = await server.listen();
+  await initializeDatabaseRepositories();
 
-    await SchoolRepository.initializeSchools();
-    await SkillRepository.initializeSkills();
-    await WilderRepository.initializeWilders();
+  await SkillRepository.initializeSkills();
+  await SchoolRepository.initializeSchools();
+  await WilderRepository.initializeWilders();
 
-    await getDatabase();
-
-    console.log(`🚀  Server ready at ${url}`);
-  });
+  console.log(`🚀  Server ready at ${url}`);
 };
 
 startServer();

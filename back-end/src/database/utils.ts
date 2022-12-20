@@ -1,11 +1,20 @@
 import { DataSource, EntityTarget } from 'typeorm';
 
+import { DATABASE_URL, NODE_ENV, TEST_DATABASE_URL } from '../config';
+import AppUserRepository from '../models/AppUser/repository';
+import SessionRepository from '../models/AppUser/session.repository';
+import SchoolRepository from '../models/School/repository';
+import SkillRepository from '../models/Skill/repository';
+import WilderRepository from '../models/Wilder/repository';
+
 const dataSource = new DataSource({
   type: "postgres",
-  url: process.env.DATABASE_URL,
+  url: NODE_ENV === "test" ? TEST_DATABASE_URL : DATABASE_URL,
   synchronize: true,
-  entities: [__dirname + "/../models/**/**.entity.{js,ts}"],
-  logging: ["query", "error"],
+  entities: [
+    __dirname + `/../models/**/*.entity.${NODE_ENV === "test" ? "ts" : "js"}`,
+  ],
+  logging: NODE_ENV === "development" ? ["query", "error"] : ["error"],
 });
 
 let initialized = false;
@@ -19,8 +28,24 @@ async function getDatabase() {
 }
 
 async function getRepository(entity: EntityTarget<any>) {
-  const repository = (await getDatabase()).getRepository(entity);
-  return repository;
+  return (await getDatabase()).getRepository(entity);
 }
 
-export { getDatabase, getRepository };
+async function initializeDatabaseRepositories() {
+  await SkillRepository.initializeRepository();
+  await SchoolRepository.initializeRepository();
+  await WilderRepository.initializeRepository();
+  await AppUserRepository.initializeRepository();
+  await SessionRepository.initializeRepository();
+}
+
+async function closeConnection() {
+  await dataSource.destroy();
+}
+
+export {
+  getDatabase,
+  getRepository,
+  initializeDatabaseRepositories,
+  closeConnection,
+};

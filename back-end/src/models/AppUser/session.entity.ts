@@ -4,7 +4,7 @@ import { BeforeInsert, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import AppUser from './appUser.entity';
 
 @Entity()
-export default class AppUserSession {
+export default class Session {
   constructor(user: AppUser) {
     this.user = user;
   }

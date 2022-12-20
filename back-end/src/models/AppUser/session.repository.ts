@@ -2,14 +2,14 @@ import { Repository } from 'typeorm';
 
 import { getRepository } from '../../database/utils';
 import AppUser from './appUser.entity';
-import AppUserSession from './session.entity';
+import Session from './session.entity';
 
-export default class SessionRepository extends AppUserSession {
+export default class SessionRepository extends Session {
   // DB operations
-  private static repository: Repository<AppUserSession>;
+  static repository: Repository<Session>;
 
   static async initializeRepository(): Promise<void> {
-    this.repository = await getRepository(AppUserSession);
+    this.repository = await getRepository(Session);
   }
 
   static async clearRepository(): Promise<void> {
@@ -17,12 +17,12 @@ export default class SessionRepository extends AppUserSession {
   }
 
   // Repository operations
-  static async createSession(user: AppUser): Promise<AppUserSession> {
-    const session = new AppUserSession(user);
+  static async createSession(user: AppUser): Promise<Session> {
+    const session = new Session(user);
     return await this.repository.save(session);
   }
 
-  static async findById(id: string): Promise<AppUserSession | null> {
+  static async findById(id: string): Promise<Session | null> {
     return await this.repository.findOneBy({ id });
   }
 }
